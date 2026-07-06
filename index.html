@@ -1,16 +1,258 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#0B0817" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
-    <title>رحلة العادات</title>
-  </head>
-  <body class="bg-dark-bg font-arabic">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>30-Day Transformation Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top-bar">
+      <div class="top-left">
+        <div class="chapter-group">
+          <label for="chapterInput">Chapter</label>
+          <input type="text" id="chapterInput" placeholder="Name your journey..." maxlength="60">
+        </div>
+        <div class="start-date-group">
+          <label for="startDateInput">Start</label>
+          <input type="date" id="startDateInput">
+        </div>
+      </div>
+      <div class="center-group">
+        <div class="day-counter">
+          <span class="day-counter-num" id="dayCounterNum">-</span>
+          <span class="day-counter-total">/ 30</span>
+        </div>
+        <div class="level-display" id="levelDisplay">
+          <span class="level-icon">&#x2B50;</span>
+          <span class="level-num" id="levelNum">1</span>
+        </div>
+      </div>
+      <div class="top-right">
+        <div class="xp-bar-container">
+          <div class="xp-label"><span id="xpCurrent">0</span> / <span id="xpNext">100</span> XP</div>
+          <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+        </div>
+        <div class="commitment-group">
+          <label>Commit</label>
+          <div class="commitment-control">
+            <span class="commitment-value" id="commitmentDisplay">5</span>
+            <input type="range" id="commitmentSlider" min="1" max="10" value="5">
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tab-nav" id="tabNav">
+      <button class="tab-btn active" data-tab="dashboard">&#x1F4CA; Dashboard</button>
+      <button class="tab-btn" data-tab="habits">&#x1F4CB; Habits</button>
+      <button class="tab-btn" data-tab="stats">&#x1F4C8; Stats</button>
+      <button class="tab-btn" data-tab="achieve">&#x1F3C6; Achievements</button>
+      <button class="tab-btn" data-tab="challenges">&#x1F525; Challenges</button>
+      <button class="tab-btn" data-tab="rewards">&#x1F381; Rewards</button>
+      <button class="tab-btn" data-tab="settings">&#x2699;&#xFE0F; Settings</button>
+    </nav>
+
+    <main>
+      <!-- ============ DASHBOARD TAB ============ -->
+      <div class="tab-content active" id="tab-dashboard">
+        <section class="card missions-card">
+          <div class="card-header">
+            <h2>Main Missions</h2>
+            <button class="add-row-btn" id="addMissionBtn">+ Add</button>
+          </div>
+          <div class="table-wrapper"><table><thead><tr><th class="sticky-col">Mission</th></tr></thead><tbody id="missionsBody"></tbody></table></div>
+        </section>
+        <section class="card habits-card">
+          <div class="card-header">
+            <h2>Daily Habits</h2>
+            <button class="add-row-btn" id="addHabitBtn">+ Add</button>
+          </div>
+          <div class="table-wrapper"><table><thead><tr><th class="sticky-col">Habit</th></tr></thead><tbody id="habitsBody"></tbody></table></div>
+        </section>
+        <section class="card ratings-card">
+          <div class="card-header"><h2>Daily Ratings</h2></div>
+          <div class="table-wrapper"><table><thead><tr><th class="sticky-col">Dimension</th></tr></thead><tbody id="ratingsBody"></tbody></table></div>
+        </section>
+        <div class="bottom-grid">
+          <section class="card journal-card">
+            <div class="card-header">
+              <h2>Daily Journal</h2>
+              <div class="journal-nav">
+                <button class="journal-btn" id="journalPrev">&#8592;</button>
+                <span class="journal-day-label" id="journalDayLabel">Day 1</span>
+                <button class="journal-btn" id="journalNext">&#8594;</button>
+              </div>
+            </div>
+            <div class="journal-body"><textarea id="journalText" placeholder="Write about your day..." rows="5"></textarea></div>
+          </section>
+          <div class="bottom-right">
+            <section class="card progress-card">
+              <div class="card-header"><h2>Monthly Progress</h2></div>
+              <div class="progress-body">
+                <div class="progress-stat"><span class="stat-label">Overall</span><span class="stat-value" id="overallPercent">0%</span></div>
+                <div class="progress-track"><div class="progress-fill" id="overallFill"></div></div>
+                <div class="progress-stats-row">
+                  <div class="stat-box"><span class="stat-num" id="daysCompleted">0</span><span class="stat-desc">Days Done</span></div>
+                  <div class="stat-box"><span class="stat-num" id="totalChecks">0</span><span class="stat-desc">Checks</span></div>
+                  <div class="stat-box"><span class="stat-num" id="bestStreak">0</span><span class="stat-desc">Best Streak</span></div>
+                </div>
+              </div>
+            </section>
+            <section class="card reward-card">
+              <div class="card-header"><h2>Final Reward</h2></div>
+              <div class="reward-body"><input type="text" id="rewardInput" placeholder="Your reward for completing 30 days?"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ HABITS TAB ============ -->
+      <div class="tab-content" id="tab-habits">
+        <section class="card">
+          <div class="card-header"><h2>Manage Habits</h2></div>
+          <div class="manage-body" id="habitsManage">
+            <div class="manage-toolbar">
+              <button class="add-row-btn" id="createHabitBtn">+ New Habit</button>
+              <div class="manage-filter">
+                <select id="habitFilter"><option value="all">All</option></select>
+              </div>
+            </div>
+            <div class="manage-list" id="habitList"></div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card-header"><h2>Archived Habits</h2></div>
+          <div class="manage-body" id="archivedSection">
+            <div class="manage-list" id="archivedList"></div>
+            <p class="empty-msg" id="emptyArchived">No archived habits.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ STATS TAB ============ -->
+      <div class="tab-content" id="tab-stats">
+        <div class="stats-grid">
+          <section class="card">
+            <div class="card-header"><h2>Overview</h2></div>
+            <div class="stats-overview">
+              <div class="stat-card"><span class="stat-icon">&#x2705;</span><span class="stat-big" id="statTotalCompleted">0</span><span class="stat-label-sm">Total Completed</span></div>
+              <div class="stat-card"><span class="stat-icon">&#x1F525;</span><span class="stat-big" id="statCurrentStreak">0</span><span class="stat-label-sm">Current Streak</span></div>
+              <div class="stat-card"><span class="stat-icon">&#x1F3AF;</span><span class="stat-big" id="statLongestStreak">0</span><span class="stat-label-sm">Longest Streak</span></div>
+              <div class="stat-card"><span class="stat-icon">&#x1F4C8;</span><span class="stat-big" id="statWeeklyRate">0%</span><span class="stat-label-sm">Weekly Rate</span></div>
+              <div class="stat-card"><span class="stat-icon">&#x1F4CA;</span><span class="stat-big" id="statMonthlyRate">0%</span><span class="stat-label-sm">Monthly Rate</span></div>
+              <div class="stat-card"><span class="stat-icon">&#x1F3C6;</span><span class="stat-big" id="statBestHabit">-</span><span class="stat-label-sm">Best Habit</span></div>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-header"><h2>Heatmap</h2></div>
+            <div class="heatmap-body">
+              <div class="heatmap-legend">
+                <span>&#x1F7E9; Excellent</span>
+                <span>&#x1F7E8; Good</span>
+                <span>&#x1F7E7; Average</span>
+                <span>&#x2B1C; No progress</span>
+              </div>
+              <div class="heatmap-grid" id="heatmapGrid"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ ACHIEVEMENTS TAB ============ -->
+      <div class="tab-content" id="tab-achieve">
+        <section class="card">
+          <div class="card-header"><h2>Achievements</h2><span class="achieve-count" id="achieveCount">0/10</span></div>
+          <div class="achieve-grid" id="achieveGrid"></div>
+        </section>
+      </div>
+
+      <!-- ============ CHALLENGES TAB ============ -->
+      <div class="tab-content" id="tab-challenges">
+        <section class="card">
+          <div class="card-header"><h2>Challenges</h2></div>
+          <div class="challenge-grid" id="challengeGrid"></div>
+        </section>
+      </div>
+
+      <!-- ============ REWARDS TAB ============ -->
+      <div class="tab-content" id="tab-rewards">
+        <div class="rewards-layout">
+          <section class="card">
+            <div class="card-header"><h2>Reward Store</h2><span class="xp-balance">&#x2B50; <span id="xpBalance">0</span> XP</span></div>
+            <div class="reward-store" id="rewardStore"></div>
+          </section>
+          <section class="card">
+            <div class="card-header"><h2>Create Reward</h2></div>
+            <div class="create-reward-body">
+              <input type="text" id="rewardNameInput" placeholder="Reward name...">
+              <input type="number" id="rewardCostInput" placeholder="XP cost..." min="1">
+              <button class="add-row-btn" id="createRewardBtn">Create Reward</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ SETTINGS TAB ============ -->
+      <div class="tab-content" id="tab-settings">
+        <div class="settings-grid">
+          <section class="card">
+            <div class="card-header"><h2>Preferences</h2></div>
+            <div class="settings-body">
+              <div class="setting-item"><span>Dark Mode</span><label class="toggle"><input type="checkbox" id="darkModeToggle" checked><span class="slider"></span></label></div>
+              <div class="setting-item"><span>Notifications</span><label class="toggle"><input type="checkbox" id="notifToggle"><span class="slider"></span></label></div>
+              <div class="setting-item"><span>Language</span><select id="langSelect"><option value="en">English</option><option value="ar">العربية</option></select></div>
+              <div class="setting-item"><span>Reminder Time</span><input type="time" id="reminderTime"></div>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-header"><h2>Data</h2></div>
+            <div class="settings-body">
+              <button class="settings-btn" id="exportCSV">Export CSV</button>
+              <button class="settings-btn" id="exportExcel">Export Excel</button>
+              <button class="settings-btn" id="exportPDF">Export PDF</button>
+              <button class="settings-btn danger" id="resetData">Reset All Data</button>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-header"><h2>Cloud Sync</h2><span class="coming-soon">Coming Soon</span></div>
+            <div class="settings-body">
+              <button class="settings-btn disabled">Sign in with Google</button>
+              <button class="settings-btn disabled">Sign in with GitHub</button>
+              <p class="hint">Cloud sync will be available in a future update.</p>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-header"><h2>Social</h2><span class="coming-soon">Coming Soon</span></div>
+            <div class="settings-body">
+              <button class="settings-btn disabled">Friends</button>
+              <button class="settings-btn disabled">Leaderboards</button>
+              <p class="hint">Social features are under development.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="habitModal">
+      <div class="modal-header"><h3 id="modalTitle">Edit Habit</h3><button class="modal-close" id="modalClose">&times;</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label>Name</label><input type="text" id="editHabitName" maxlength="60"></div>
+        <div class="form-group"><label>Icon</label><div class="icon-picker" id="iconPicker"></div></div>
+        <div class="form-row-modal">
+          <div class="form-group"><label>Category</label><select id="editHabitCategory"></select></div>
+          <div class="form-group"><label>Color</label><input type="color" id="editHabitColor" value="#22C55E"></div>
+        </div>
+        <div class="form-group"><label>Frequency</label><select id="editHabitFrequency"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
+        <div class="form-group"><label>Reminder</label><input type="time" id="editHabitReminder"></div>
+      </div>
+      <div class="modal-footer"><button class="add-row-btn" id="modalSaveBtn">Save</button></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
